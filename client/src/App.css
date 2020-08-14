@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.addItem {
+  margin: 10px auto;
+  padding: 0 28px 0 28px;
+}
+/* .shoppingList {
+  margin-top: 20px;
+} */

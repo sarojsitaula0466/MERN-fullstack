@@ -1,11 +1,14 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { connect } from "react-redux";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-
+import Register from "../components/auth/Register";
+import Logout from "../components/auth/Logout";
+import LogIn from "../components/auth/LogIn";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -18,7 +21,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavBar = () => {
+const NavBar = ({ auth }) => {
+  const { isAuthenticated, user } = auth;
+  const alreadyLoggedIn = (
+    <Fragment>
+      <span>
+        <strong>{user ? `Welcome ${user.name}` : ""}</strong>
+      </span>
+      <Logout />
+    </Fragment>
+  );
+  const guestUser = (
+    <Fragment>
+      <Register />
+      <LogIn />
+    </Fragment>
+  );
   const classes = useStyles();
   return (
     <MuiThemeProvider>
@@ -28,20 +46,14 @@ const NavBar = () => {
             <Typography variant="h6" className={classes.title}>
               Shopping List
             </Typography>
-
-            <Button color="inherit">
-              <a
-                href="https://github.com/sarojsitaula0466"
-                style={{ textDecoration: "none", color: "#fff" }}
-              >
-                Github
-              </a>
-            </Button>
+            {isAuthenticated ? alreadyLoggedIn : guestUser}
           </Toolbar>
         </AppBar>
       </div>
     </MuiThemeProvider>
   );
 };
-
-export default NavBar;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+export default connect(mapStateToProps, null)(NavBar);

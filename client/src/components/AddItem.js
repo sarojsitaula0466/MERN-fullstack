@@ -8,7 +8,7 @@ class AddItem extends Component {
   };
   onChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      name: e.target.value,
     });
   };
 
@@ -16,9 +16,14 @@ class AddItem extends Component {
     e.preventDefault();
 
     const newItem = { name: this.state.name };
-    this.props.addItem(newItem);
-    e.target.reset();
+
+    if (newItem.name) {
+      this.props.addItem(newItem);
+
+      this.setState({ name: "" });
+    }
   };
+
   render() {
     return (
       <form onSubmit={this.onSubmit}>
@@ -26,6 +31,7 @@ class AddItem extends Component {
           <TextField
             onChange={this.onChange}
             name="name"
+            value={this.state.name}
             label="Add your items here..."
             fullWidth={true}
           />
